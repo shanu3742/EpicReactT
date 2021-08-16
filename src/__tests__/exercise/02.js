@@ -1,49 +1,59 @@
-// simple test with React Testing Library
-// http://localhost:3000/counter
 
 import * as React from 'react'
-import ReactDOM from 'react-dom'
+
+
 // 🐨 import the `render` and `fireEvent` utilities from '@testing-library/react'
+import {render,fireEvent} from '@testing-library/react'
+//import jest library
+import '@testing-library/jest-dom/extend-expect'
+
+
 import Counter from '../../components/counter'
 
-// 💣 remove this. React Testing Library does this automatically!
-beforeEach(() => {
-  document.body.innerHTML = ''
-})
+// cleanup function  is in-build function in '@testing-library/react' so no need to write 
+// beforeEach(() => {
+//   document.body.innerHTML = ''
+// })
 
 test('counter increments and decrements when the buttons are clicked', () => {
-  // 💣 remove these two lines, React Testing Library will create the div for you
-  const div = document.createElement('div')
-  document.body.append(div)
+  
 
-  // 🐨 swap ReactDOM.render with React Testing Library's render
-  // Note that React Testing Library's render doesn't need you to pass a `div`
-  // so you only need to pass one argument. render returns an object with a
-  // bunch of utilities on it. For now, let's just grab `container` which is
-  // the div that React Testing Library creates for us.
-  // 💰 const {container} = render(<Counter />)
-  ReactDOM.render(<Counter />, div)
 
-  // 🐨 instead of `div` here you'll want to use the `container` you get back
-  // from React Testing Library
+  //we import render from '@testing-library/react' so no need to write ReactDOM
+
+  // const view =render(<Counter />)
+
+  // const div = view.container
+//we can do this using object distructuring  and below simple object distructuring example
+//   const {container}=render(<Counter />)
+//  const div= container
+ 
+//advance object distructuring
+
+const {container:div}=render(<Counter />)
+
+  
   const [decrement, increment] = div.querySelectorAll('button')
   const message = div.firstChild.querySelector('div')
 
-  expect(message.textContent).toBe('Current count: 0')
+  expect(message).toHaveTextContent('Current count: 0')
 
-  // 🐨 replace the next two statements with `fireEvent.click(button)`
-  const incrementClickEvent = new MouseEvent('click', {
-    bubbles: true,
-    cancelable: true,
-    button: 0,
-  })
-  increment.dispatchEvent(incrementClickEvent)
-  expect(message.textContent).toBe('Current count: 1')
-  const decrementClickEvent = new MouseEvent('click', {
-    bubbles: true,
-    cancelable: true,
-    button: 0,
-  })
-  decrement.dispatchEvent(decrementClickEvent)
-  expect(message.textContent).toBe('Current count: 0')
+  // 🐨 replace all this code with one line of code 
+  // const incrementClickEvent = new MouseEvent('click', {
+  //   bubbles: true,
+  //   cancelable: true,
+  //   button: 0,
+  // })
+  // increment.dispatchEvent(incrementClickEvent)
+  fireEvent.click(increment)
+
+  expect(message).toHaveTextContent('Current count: 1')
+  // const decrementClickEvent = new MouseEvent('click', {
+  //   bubbles: true,
+  //   cancelable: true,
+  //   button: 0,
+  // })
+  // decrement.dispatchEvent(decrementClickEvent)
+  fireEvent.click(decrement)
+  expect(message).toHaveTextContent('Current count: 0')
 })

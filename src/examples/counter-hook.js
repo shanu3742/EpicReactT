@@ -12,6 +12,19 @@ function Counter() {
       <button onClick={increment}>Increment</button>
     </div>
   )
+
+  // function Message(Props) {
+  //   console.log(Props.children)
+  //   return (
+  //     <div className="message">
+  //    {Props.children}
+  //     </div>
+  //     )
+  // }
+
+  // return <>
+  //   	<Message >testing</Message>
+  // </>
 }
 
 export default Counter
